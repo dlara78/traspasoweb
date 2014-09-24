@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Formularios;
+package formulario;
+
+import BaseDatos.ConexionMySQL;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,9 +25,9 @@ public class Empleados extends javax.swing.JFrame {
 //        cboGenero.addItem("M");
 //        cboGenero.addItem("F");
         inhabilitar();
-
+        
     }
-
+    
     void inhabilitar() {
         txtPrimerApellido.setEnabled(false);
         txtSegundoApellido.setEnabled(false);
@@ -36,9 +42,9 @@ public class Empleados extends javax.swing.JFrame {
         txtFechaNac.setText("");
         btnGuardar.setEnabled(false);
         btnCancelar.setEnabled(false);
-
+        
     }
-
+    
     void habilitar() {
         txtPrimerApellido.setEnabled(true);
         txtSegundoApellido.setEnabled(true);
@@ -94,14 +100,38 @@ public class Empleados extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Segundo apellido");
 
+        txtSegundoApellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSegundoApellidoActionPerformed(evt);
+            }
+        });
+
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Primer nombre");
+
+        txtPrimerNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrimerNombreActionPerformed(evt);
+            }
+        });
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Segundo nombre");
 
+        txtSegundoNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSegundoNombreActionPerformed(evt);
+            }
+        });
+
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("F. Nacimiento");
+
+        txtFechaNac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaNacActionPerformed(evt);
+            }
+        });
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Genero");
@@ -121,8 +151,18 @@ public class Empleados extends javax.swing.JFrame {
         });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -170,7 +210,7 @@ public class Empleados extends javax.swing.JFrame {
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(287, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6});
@@ -210,31 +250,31 @@ public class Empleados extends javax.swing.JFrame {
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalir))
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(313, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(277, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtPrimerApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrimerApellidoActionPerformed
-        // TODO add your handling code here:
+        txtPrimerApellido.transferFocus();
     }//GEN-LAST:event_txtPrimerApellidoActionPerformed
 
     private void cboGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboGeneroActionPerformed
@@ -248,6 +288,66 @@ public class Empleados extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         habilitar();
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        inhabilitar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtSegundoApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundoApellidoActionPerformed
+        txtSegundoApellido.transferFocus();
+    }//GEN-LAST:event_txtSegundoApellidoActionPerformed
+
+    private void txtPrimerNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrimerNombreActionPerformed
+        txtPrimerNombre.transferFocus();
+    }//GEN-LAST:event_txtPrimerNombreActionPerformed
+
+    private void txtSegundoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundoNombreActionPerformed
+        txtSegundoNombre.transferFocus();
+    }//GEN-LAST:event_txtSegundoNombreActionPerformed
+
+    private void txtFechaNacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacActionPerformed
+        txtFechaNac.transferFocus();
+    }//GEN-LAST:event_txtFechaNacActionPerformed
+    
+    String accion = "Insertar";
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        ConexionMySQL mysql = new ConexionMySQL();
+        Connection cn = mysql.Conectar();
+        String ap1, ap2, nom1, nom2, fn, gen;
+        String sSQL = "";
+        String mensaje = "";
+        ap1 = txtPrimerApellido.getText();
+        ap2 = txtSegundoApellido.getText();
+        nom1 = txtPrimerNombre.getText();
+        nom2 = txtSegundoNombre.getText();
+        fn = txtFechaNac.getText();
+        gen = cboGenero.getSelectedItem().toString();
+        
+        sSQL = "INSERT INTO datos_personales(apellido1, apellido2, nombre1, nombre2, fecha_nac, genero)"
+                + "VALUES(?, ?, ?, ?, ?, ?)";
+        mensaje = "Los datos se han insertado de manera satisfactoria.";
+        
+        try {
+            PreparedStatement pst = cn.prepareStatement(sSQL);
+            pst.setString(1, ap1);
+            pst.setString(2, ap2);
+            pst.setString(3, nom1);
+            pst.setString(4, nom2);
+            pst.setString(5, fn);
+            pst.setString(6, gen);
+            
+            
+            int n = pst.executeUpdate();    //Se crea esta variable para comprobar que ha funcinado el método.
+            if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
+                JOptionPane.showMessageDialog(null, mensaje); 
+            }
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
+
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
