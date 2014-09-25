@@ -6,10 +6,11 @@ import javax.swing.JOptionPane;
 
 public class conexion {
 
-    private static String db = "java";
-    private static String user = "java";
-    private static String pass = "012345";
-    private static String url = "jdbc:mysql://localhost/" + db;
+    private static String server = "192.168.100.1";
+    private static String db = "javatransfer";
+    private static String user = "javauser";
+    private static String pass = "957104";
+    private static String url = "jdbc:mysql://" + server + "/" + db;
     private static Connection conn;
 
     public static Connection getConnection() {
