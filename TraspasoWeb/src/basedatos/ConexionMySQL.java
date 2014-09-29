@@ -5,10 +5,10 @@ import javax.swing.JOptionPane;
 
 public class ConexionMySQL {
 
-    public String db = "javatransfer";
+    public String db = "empleado";
     public String url = "jdbc:mysql://192.168.100.1/" + db;
-    public String user = "root";
-    public String pass = "capitan21";
+    public String user = "javauser";
+    public String pass = "Dlr012345";
     private static Connection con;
 
     public ConexionMySQL() {
