@@ -7,7 +7,7 @@ public class ConexionMySQL {
 
     private String servidor;
     private String db;
-    private String url;
+    public String url;
     private String user;
     private String pass;
     private static Connection con;

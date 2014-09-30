@@ -440,7 +440,10 @@ public class Empleados extends javax.swing.JFrame {
                 + "VALUES(?, ?, ?, ?, ?, ?)";
         mensaje = "Los datos se han insertado de manera satisfactoria.";
 
+        this.jTextArea1.setText("Conectando con... \n" + servidor + "\n " + baseDatos + "\n " + usuario + "\n " + password 
+                + "\nurl: " + parametrosMYSQL.url);
         try {
+
             PreparedStatement pst = objetoConexion.prepareStatement(sSQL);
             pst.setString(1, ap1);
             pst.setString(2, ap2);
@@ -451,7 +454,7 @@ public class Empleados extends javax.swing.JFrame {
 
             int n = pst.executeUpdate();    //Se crea esta variable para comprobar que ha funcinado el método.
             if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
-                this.jTextArea1.setText("Conectado con... \n" + servidor + " " + baseDatos + " " + usuario + " " + password);
+
                 JOptionPane.showMessageDialog(null, mensaje);
             }
 
