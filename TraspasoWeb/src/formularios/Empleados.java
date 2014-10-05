@@ -8,8 +8,6 @@ package formularios;
 import BaseDatos.ConexionMySQL;
 import java.sql.*;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,19 +34,19 @@ public class Empleados extends javax.swing.JFrame {
         String password = String.valueOf(this.passPassword.getPassword());
         String[] titulos = {"ID", "Apellido 1", "Apellido 2", "Nombre 1", "Nombre 2", "F.Nac.", "Género"};
         String[] registro = new String[7];
-        String sSQL; 
+        String sSQL;
         modelo = new DefaultTableModel(null, titulos);
 
         ConexionMySQL mysql = new ConexionMySQL(servidor, baseDatos, usuario, password);
         Connection cn = mysql.Conectar();
-        
-        sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales " 
-                + "WHERE CONCAT (apellido1, ' ',apellido2, ' ', nombre1, ' ', nombre2) LIKE '%"+valor+"%'";
-        
+
+        sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales "
+                + "WHERE CONCAT (apellido1, ' ',apellido2, ' ', nombre1, ' ', nombre2) LIKE '%" + valor + "%'";
+
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sSQL);
-            
+
             while (rs.next()) {
                 registro[0] = rs.getString("id_emp");
                 registro[1] = rs.getString("apellido1");
@@ -63,7 +61,50 @@ public class Empleados extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-        
+
+    }
+
+    String id_Actualizar = "";
+    
+    void BuscarEmpleadoEditar(String id) {
+
+        String servidor = this.cmbServidor.getSelectedItem().toString();
+        String baseDatos = this.txtBaseDatos.getText();
+        String usuario = this.txtUsuario.getText();
+        String password = String.valueOf(this.passPassword.getPassword());
+
+        String sSQL;
+        String ap1 = "", ap2 = "", nom1 = "", nom2 = "", fn = "", gen = "";
+
+        ConexionMySQL mysql = new ConexionMySQL(servidor, baseDatos, usuario, password);
+        Connection cn = mysql.Conectar();
+
+        sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales "
+                + "WHERE id_emp = " + id;
+
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sSQL);
+
+            while (rs.next()) {
+                ap1 = rs.getString("apellido1");
+                ap2 = rs.getString("apellido2");
+                nom1 = rs.getString("nombre1");
+                nom2 = rs.getString("nombre2");
+                fn = rs.getString("fecha_nac");
+                gen = rs.getString("genero");
+            }
+
+            txtPrimerApellido.setText(ap1);
+            txtSegundoApellido.setText(ap2);
+            txtPrimerNombre.setText(nom1);
+            txtSegundoNombre.setText(nom2);
+            id_Actualizar = id;
+            //jcalFNac.setDate(fn);   //Desarrollar este metodo
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
 
     }
 
@@ -106,6 +147,8 @@ public class Empleados extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        mnEditar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtPrimerApellido = new javax.swing.JTextField();
@@ -132,11 +175,14 @@ public class Empleados extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JTextField();
         passPassword = new javax.swing.JPasswordField();
         cmbServidor = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblConsultaEmpleado = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -150,6 +196,14 @@ public class Empleados extends javax.swing.JFrame {
             }
         ));
         jScrollPane2.setViewportView(jTable1);
+
+        mnEditar.setText("modificar");
+        mnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnEditarActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(mnEditar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -231,6 +285,8 @@ public class Empleados extends javax.swing.JFrame {
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("Fecha nacimiento");
+
+        jcalFNac.setDateFormatString("dd/MM/yyyy");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -339,6 +395,13 @@ public class Empleados extends javax.swing.JFrame {
         cmbServidor.setEditable(true);
         cmbServidor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "localhost", "192.168.1.10", "192.168.100.1", "84.127.225.17", "84.127.225.30" }));
 
+        jButton1.setText("Conectar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -346,10 +409,6 @@ public class Empleados extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                        .addComponent(passPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -360,9 +419,17 @@ public class Empleados extends javax.swing.JFrame {
                         .addComponent(txtBaseDatos))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(cmbServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(passPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(111, 111, 111))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,6 +450,8 @@ public class Empleados extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(passPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -399,9 +468,29 @@ public class Empleados extends javax.swing.JFrame {
 
             }
         ));
+        tblConsultaEmpleado.setComponentPopupMenu(jPopupMenu1);
         jScrollPane3.setViewportView(tblConsultaEmpleado);
 
-        jButton1.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Refrescar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -412,9 +501,13 @@ public class Empleados extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addComponent(btnBuscar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiar)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -423,10 +516,12 @@ public class Empleados extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar)
+                    .addComponent(jButton2)
+                    .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -451,7 +546,7 @@ public class Empleados extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -490,7 +585,6 @@ public class Empleados extends javax.swing.JFrame {
     private void txtSegundoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundoNombreActionPerformed
         txtSegundoNombre.transferFocus();
     }//GEN-LAST:event_txtSegundoNombreActionPerformed
-
     String accion = "Insertar";
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
@@ -516,10 +610,18 @@ public class Empleados extends javax.swing.JFrame {
         GregorianCalendar fechaAlta = new GregorianCalendar();
         fechaAlta.setTime(jcalFNac.getDate());
 
+        if (accion.equals("Insertar"))
+        {        
         sSQL = "INSERT INTO datos_personales(apellido1, apellido2, nombre1, nombre2, fecha_nac, genero)"
                 + "VALUES(?, ?, ?, ?, ?, ?)";
         mensaje = "Los datos se han insertado de manera satisfactoria.";
-
+        }
+        else if (accion.equals("Modificar"))
+        {
+            //Video 7 , minuto 5
+        }
+        
+        
         try {
 
             PreparedStatement pst = objetoConexion.prepareStatement(sSQL);
@@ -534,6 +636,7 @@ public class Empleados extends javax.swing.JFrame {
             if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
 
                 JOptionPane.showMessageDialog(null, mensaje);
+                cargarTablaEmpleados("");
             }
 
         } catch (SQLException ex) {
@@ -542,6 +645,46 @@ public class Empleados extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        cargarTablaEmpleados("");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String valor = txtBuscar.getText();
+        cargarTablaEmpleados(valor);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        this.txtBuscar.setText("");
+        cargarTablaEmpleados("");
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cargarTablaEmpleados("");        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void mnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEditarActionPerformed
+        int filaSel;
+        String id;
+
+        try {
+            filaSel = tblConsultaEmpleado.getSelectedRow();
+                        if (filaSel == -1) {
+                            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila");
+                        }
+            accion = "Modificar";
+            modelo = (DefaultTableModel) tblConsultaEmpleado.getModel();
+            id = (String) modelo.getValueAt(filaSel, 0); //Aquí obtenemos el ID del registro seleccionado.
+            BuscarEmpleadoEditar(id);
+            
+            
+            
+        } catch (Exception e) {
+
+        }
+
+    }//GEN-LAST:event_mnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -579,13 +722,16 @@ public class Empleados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox cboGenero;
     private javax.swing.JComboBox cmbServidor;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -599,14 +745,16 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private com.toedter.calendar.JDateChooser jcalFNac;
+    private javax.swing.JMenuItem mnEditar;
     private javax.swing.JPasswordField passPassword;
     private javax.swing.JTable tblConsultaEmpleado;
     private javax.swing.JTextField txtBaseDatos;
+    private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtPrimerApellido;
     private javax.swing.JTextField txtPrimerNombre;
     private javax.swing.JTextField txtSegundoApellido;
