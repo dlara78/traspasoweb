@@ -697,7 +697,7 @@ public class Empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_mnEditarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        // TODO add your handling code here:
+             // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     /**
