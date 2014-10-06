@@ -3,16 +3,16 @@ package BaseDatos;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
-public class ConexionMySQL {
+public class Conector {
 
-    private String servidor;
-    private String db;
+    public String servidor;
+    public String db;
     public String url;
-    private String user;
-    private String pass;
+    public String user;
+    public String pass;
     private static Connection con;
 
-    public ConexionMySQL(String server, String dataBase, String usuario, String password) {
+    public Conector(String server, String dataBase, String usuario, String password) {
         
         this.servidor = server;
         this.db = dataBase;
