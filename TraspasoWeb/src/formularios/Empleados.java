@@ -5,7 +5,7 @@
  */
 package formularios;
 
-import BaseDatos.ConexionMySQL;
+import BaseDatos.Conector;
 import java.sql.*;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
@@ -18,32 +18,30 @@ import javax.swing.table.DefaultTableModel;
 public class Empleados extends javax.swing.JFrame {
 
     DefaultTableModel modelo;
+    //Abajo indicamos el modo inicial del formulario (Insertar o Modificar).
     String accion = "Insertar";
-    
-    
+
     public Empleados() {
+
         initComponents();
         inhabilitar();
-
     }
 
     void cargarTablaEmpleados(String valor) {
 
-        String servidor = this.cmbServidor.getSelectedItem().toString();
-        String baseDatos = this.txtBaseDatos.getText();
-        String usuario = this.txtUsuario.getText();
-        String password = String.valueOf(this.passPassword.getPassword());
+        //Abajo creamos el objeto 'conexion', que nos dará los parámetros de conexión a la base MySQL.
+        Conector conexion = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
         String[] titulos = {"ID", "Apellido 1", "Apellido 2", "Nombre 1", "Nombre 2", "F.Nac.", "Género"};
         String[] registro = new String[7];
         String sSQL;
         modelo = new DefaultTableModel(null, titulos);
 
-        ConexionMySQL mysql = new ConexionMySQL(servidor, baseDatos, usuario, password);
+        Conector mysql = new Conector(conexion.servidor, conexion.db, conexion.user, conexion.pass);
         Connection cn = mysql.Conectar();
 
         sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales " //Seleccionamos los campos
-                + "WHERE CONCAT (apellido1, ' ',apellido2, ' ', nombre1, ' ', nombre2) LIKE '%" + valor + "%'"   // que coincidan con la búsqueda
-                + " ORDER BY id_emp DESC "                                                                       // y los ordenamos descentientes.
+                + "WHERE CONCAT (apellido1, ' ',apellido2, ' ', nombre1, ' ', nombre2) LIKE '%" + valor + "%'" // que coincidan con la búsqueda
+                + " ORDER BY id_emp DESC " // y los ordenamos descentientes.
                 ;
 
         try {
@@ -71,15 +69,10 @@ public class Empleados extends javax.swing.JFrame {
 
     void BuscarEmpleadoEditar(String id) {
 
-        String servidor = this.cmbServidor.getSelectedItem().toString();
-        String baseDatos = this.txtBaseDatos.getText();
-        String usuario = this.txtUsuario.getText();
-        String password = String.valueOf(this.passPassword.getPassword());
-
         String sSQL;
         String ap1 = "", ap2 = "", nom1 = "", nom2 = "", fn = "", gen = "";
 
-        ConexionMySQL mysql = new ConexionMySQL(servidor, baseDatos, usuario, password);
+        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
         sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales "
@@ -598,7 +591,7 @@ public class Empleados extends javax.swing.JFrame {
         String usuario = this.txtUsuario.getText();
         String password = String.valueOf(this.passPassword.getPassword());
 
-        ConexionMySQL parametrosMYSQL = new ConexionMySQL(servidor, baseDatos, usuario, password);
+        Conector parametrosMYSQL = new Conector(servidor, baseDatos, usuario, password);
         Connection objetoConexion = parametrosMYSQL.Conectar();
 
         String ap1, ap2, nom1, nom2, f_nac, gen;
@@ -620,15 +613,14 @@ public class Empleados extends javax.swing.JFrame {
                     + "VALUES(?, ?, ?, ?, ?, ?)";
             mensaje = "Los datos se han insertado de manera satisfactoria.";
         } else if (accion.equals("Modificar")) {
-            sSQL = "UPDATE datos_personales " +
-                    "SET apellido1 = ?, " +
-                    "apellido2 = ?, " +
-                    "nombre1 = ?, " +
-                    "nombre2 = ?, " +
-                    "fecha_nac = ?, " +
-                    "genero = ? " +
-                    "WHERE id_emp = " + id_Actualizar                    
-                    ;
+            sSQL = "UPDATE datos_personales "
+                    + "SET apellido1 = ?, "
+                    + "apellido2 = ?, "
+                    + "nombre1 = ?, "
+                    + "nombre2 = ?, "
+                    + "fecha_nac = ?, "
+                    + "genero = ? "
+                    + "WHERE id_emp = " + id_Actualizar;
             mensaje = "Los datos se han modificado correctamente.";
         }
 
@@ -698,7 +690,7 @@ public class Empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_mnEditarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-             // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     /**
