@@ -35,17 +35,17 @@ public class Conector {
         return con;
     }
 
-    public Connection Conectar(String servidor, String baseDatos, String user, String pass) {
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //Cargamos el Driver MySQL
-            //Creamos el enlace hacia la base de datos
-            con = DriverManager.getConnection(this.url, user, pass);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error" + e);
-        }
-
-        return con;
-    }
+//    public Connection Conectar(String servidor, String baseDatos, String user, String pass) {
+//
+//        try {
+//            Class.forName("com.mysql.jdbc.Driver"); //Cargamos el Driver MySQL
+//            //Creamos el enlace hacia la base de datos
+//            con = DriverManager.getConnection(this.url, user, pass);
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Error" + e);
+//        }
+//
+//        return con;
+//    }
 
 }
