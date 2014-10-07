@@ -29,8 +29,8 @@ public class Empleados extends javax.swing.JFrame {
 
     void cargarTablaEmpleados(String valor) {
 
-        String[] titulos = {"ID", "Apellido 1", "Apellido 2", "Nombre 1", "Nombre 2", "F.Nac.", "Género"};
-        String[] registro = new String[7];
+        String[] titulos = {"Tarea", "Empresa", "Trabajador", "F.Alta", "Duracion"};
+        String[] registro = new String[5];
         String sSQL;
         modelo = new DefaultTableModel(null, titulos);
 
@@ -38,23 +38,25 @@ public class Empleados extends javax.swing.JFrame {
         Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
-        sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales " //Seleccionamos los campos
-                + "WHERE CONCAT (apellido1, ' ',apellido2, ' ', nombre1, ' ', nombre2) LIKE '%" + valor + "%'" // que coincidan con la búsqueda
-                + " ORDER BY id_emp DESC " // y los ordenamos descentientes.
+//        sSQL = "SELECT ID_altas, emp_nombre, tra_apelnom, alta_ini, alta_fin FROM " + this.txtTabla.getText() //Seleccionamos los campos
+        sSQL = "SELECT * FROM " + this.txtTabla.getText() //Seleccionamos los campos                
+                + " WHERE CONCAT (emp_nombre, ' ', tra_apelnom, ' ', tra_nif, ' ', tra_naf) LIKE '%" + valor + "%'" // que coincidan con la búsqueda
+                + " ORDER BY ID_altas DESC " // y los ordenamos descentientes.
                 ;
 
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sSQL);
 
+            //Con el método rs.next() hacemos que pase por todos los registros.
             while (rs.next()) {
-                registro[0] = rs.getString("id_emp");
-                registro[1] = rs.getString("apellido1");
-                registro[2] = rs.getString("apellido2");
-                registro[3] = rs.getString("nombre1");
-                registro[4] = rs.getString("nombre2");
-                registro[5] = rs.getString("fecha_nac");
-                registro[6] = rs.getString("genero");
+                registro[0] = rs.getString("ID_altas");
+                registro[1] = rs.getString("emp_nombre");
+                registro[2] = rs.getString("tra_apelnom");
+//                registro[3] = rs.getDate("alta_ini").toString();
+//                registro[4] = rs.getDate("alta_fin").toString();
+//                registro[5] = rs.getString("fecha_nac");
+//                registro[6] = rs.getString("genero");
                 modelo.addRow(registro);
             }
             tblConsultaEmpleado.setModel(modelo);
@@ -95,7 +97,7 @@ public class Empleados extends javax.swing.JFrame {
             txtPrimerNombre.setText(nom1);
             txtSegundoNombre.setText(nom2);
             id_Actualizar = id;
-            jcalFNac.setDate(MetodosAuxiliares.Fechas.pasarFecha_a_Date(fn));
+            //jcalFNac.setDate(MetodosAuxiliares.Fechas.pasarFecha_a_Date(fn));
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -108,14 +110,14 @@ public class Empleados extends javax.swing.JFrame {
         txtSegundoApellido.setEnabled(false);
         txtPrimerNombre.setEnabled(false);
         txtSegundoNombre.setEnabled(false);
-        cboGenero.setEnabled(false);
+        //cboGenero.setEnabled(false);
         txtPrimerApellido.setText("");
         txtSegundoApellido.setText("");
         txtPrimerNombre.setText("");
         txtSegundoNombre.setText("");
         btnGuardar.setEnabled(false);
         btnCancelar.setEnabled(false);
-        jcalFNac.setEnabled(false);
+        //jcalFNac.setEnabled(false);
 
     }
 
@@ -124,11 +126,11 @@ public class Empleados extends javax.swing.JFrame {
         txtSegundoApellido.setEnabled(true);
         txtPrimerNombre.setEnabled(true);
         txtSegundoNombre.setEnabled(true);
-        cboGenero.setEnabled(true);
+        //cboGenero.setEnabled(true);
         btnGuardar.setEnabled(true);
         btnCancelar.setEnabled(true);
         txtPrimerApellido.requestFocus();
-        jcalFNac.setEnabled(true);
+        //jcalFNac.setEnabled(true);
     }
 
     /**
@@ -213,17 +215,17 @@ public class Empleados extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
+        txtContratoProfesion = new javax.swing.JTextField();
+        txtContratoCategoria = new javax.swing.JTextField();
+        txtContratoCentro = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtContratoHorario = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txtContratoNotas = new javax.swing.JTextArea();
         jLabel30 = new javax.swing.JLabel();
-        jTextField17 = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        txtContratoJornada = new javax.swing.JTextField();
+        jdateContratoAlta = new com.toedter.calendar.JDateChooser();
+        jdateContratoBaja = new com.toedter.calendar.JDateChooser();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -522,9 +524,9 @@ public class Empleados extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtTraProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTraProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtTraCP))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -615,12 +617,12 @@ public class Empleados extends javax.swing.JFrame {
         jLabel8.setText("Servidor");
 
         cmbServidor.setEditable(true);
-        cmbServidor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "192.168.100.1", "localhost", "192.168.1.10", "84.127.225.17", "84.127.225.30" }));
+        cmbServidor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "localhost", "192.168.100.1", "192.168.1.10", "84.127.225.17", "84.127.225.30" }));
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Base de datos");
 
-        txtBaseDatos.setText("empleado");
+        txtBaseDatos.setText("laboralonline");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Tabla");
@@ -635,7 +637,7 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
 
-        txtUsuario.setText("javauser");
+        txtUsuario.setText("root");
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsuarioActionPerformed(evt);
@@ -644,8 +646,6 @@ public class Empleados extends javax.swing.JFrame {
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Contraseña");
-
-        passPassword.setText("capitan21");
 
         jButton1.setText("Conectar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -662,29 +662,29 @@ public class Empleados extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                        .addComponent(txtBaseDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBaseDatos))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addComponent(passPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(txtTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(passPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 28, 28))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -733,13 +733,13 @@ public class Empleados extends javax.swing.JFrame {
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel29.setText("Horario");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtContratoHorario.setColumns(20);
+        txtContratoHorario.setRows(5);
+        jScrollPane1.setViewportView(txtContratoHorario);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        txtContratoNotas.setColumns(20);
+        txtContratoNotas.setRows(5);
+        jScrollPane4.setViewportView(txtContratoNotas);
 
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel30.setText("Notas");
@@ -761,18 +761,17 @@ public class Empleados extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jTextField16)
+                    .addComponent(txtContratoCentro)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jdateContratoAlta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
                         .addComponent(jLabel24)
                         .addGap(18, 18, 18)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 24, Short.MAX_VALUE))
-                    .addComponent(jTextField14)
-                    .addComponent(jTextField15)
+                        .addComponent(jdateContratoBaja, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+                    .addComponent(txtContratoProfesion)
+                    .addComponent(txtContratoCategoria)
                     .addComponent(jScrollPane4)
-                    .addComponent(jTextField17))
+                    .addComponent(txtContratoJornada))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -783,23 +782,23 @@ public class Empleados extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel23)
                         .addComponent(jLabel24))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jdateContratoAlta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jdateContratoBaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContratoProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
-                    .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContratoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtContratoCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtContratoJornada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel28))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -835,7 +834,7 @@ public class Empleados extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -899,11 +898,11 @@ public class Empleados extends javax.swing.JFrame {
         ap2 = txtSegundoApellido.getText();
         nom1 = txtPrimerNombre.getText();
         nom2 = txtSegundoNombre.getText();
-        f_nac = MetodosAuxiliares.Fechas.pasarJCalendaraString(jcalFNac.getCalendar());
-        gen = cboGenero.getSelectedItem().toString();
+        //f_nac = MetodosAuxiliares.Fechas.pasarJCalendaraString(jcalFNac.getCalendar());
+        //gen = cboGenero.getSelectedItem().toString();
 
         GregorianCalendar fechaAlta = new GregorianCalendar();
-        fechaAlta.setTime(jcalFNac.getDate());
+        //fechaAlta.setTime(jcalFNac.getDate());
 
         if (accion.equals("Insertar")) {
             sSQL = "INSERT INTO datos_personales(apellido1, apellido2, nombre1, nombre2, fecha_nac, genero)"
@@ -928,8 +927,8 @@ public class Empleados extends javax.swing.JFrame {
             pst.setString(2, ap2);
             pst.setString(3, nom1);
             pst.setString(4, nom2);
-            pst.setString(5, f_nac);
-            pst.setString(6, gen);
+            //pst.setString(5, f_nac);
+            //pst.setString(6, gen);
 
             int n = pst.executeUpdate();    //Se crea esta variable para comprobar que ha funcinado el método.
             if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
@@ -1039,8 +1038,6 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JComboBox cmbServidor;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1083,20 +1080,22 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
     private com.toedter.calendar.JDateChooser jdatTraNac;
+    private com.toedter.calendar.JDateChooser jdateContratoAlta;
+    private com.toedter.calendar.JDateChooser jdateContratoBaja;
     private javax.swing.JMenuItem mnEditar;
     private javax.swing.JPasswordField passPassword;
     private javax.swing.JTable tblConsultaEmpleado;
     private javax.swing.JTextField txtBaseDatos;
     private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtContratoCategoria;
+    private javax.swing.JTextField txtContratoCentro;
+    private javax.swing.JTextArea txtContratoHorario;
+    private javax.swing.JTextField txtContratoJornada;
+    private javax.swing.JTextArea txtContratoNotas;
+    private javax.swing.JTextField txtContratoProfesion;
     private javax.swing.JTextField txtPrimerApellido;
     private javax.swing.JTextField txtPrimerNombre;
     private javax.swing.JTextField txtSegundoApellido;
