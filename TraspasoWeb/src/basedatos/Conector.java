@@ -5,12 +5,12 @@ import javax.swing.JOptionPane;
 
 public class Conector {
 
-    public String servidor;
-    public String db;
-    public String table;
-    public String url;
-    public String user;
-    public String pass;
+    private String servidor;
+    private String db;
+    private String table;
+    private String url;
+    private String user;
+    private String pass;
     private static Connection con;
 
     /*
@@ -24,8 +24,8 @@ public class Conector {
         this.table = tabla;
         this.user = usuario;
         this.pass = password;
-        this.url = "jdbc:mysql://" + servidor + "/" + baseDatos;
-
+        this.url = "jdbc:mysql://" + servidor + "/" + baseDatos + "?zeroDateTimeBehavior=convertToNull";
+        //la cadena ?zeroDateTimeBehavior=convertToNull evita el fallo que provocan los años '0000' en la base de datos.
     }
 
     public Connection Conectar() {
@@ -44,20 +44,20 @@ public class Conector {
         return con; //Creamos el enlace.
     }
 
-    public Connection Conectar(String servidor, String user, String pass) {
-        /*
-         Este método carga los drivers sql, recoge los parámetros de conexión
-         y devuelve un objeto de tipo Connection para realizar la conexión con la
-         base de datos.
-         */
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //Cargamos el Driver MySQL
-            //Creamos el enlace hacia la base de datos
-            con = DriverManager.getConnection(servidor, user, pass); //Creamos el enlace.
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error" + e);
-        }
-
-        return con; //Creamos el enlace.
-    }
+//    public Connection Conectar(String servidor, String user, String pass) {
+//        /*
+//         Este método carga los drivers sql, recoge los parámetros de conexión
+//         y devuelve un objeto de tipo Connection para realizar la conexión con la
+//         base de datos.
+//         */
+//        try {
+//            Class.forName("com.mysql.jdbc.Driver"); //Cargamos el Driver MySQL
+//            //Creamos el enlace hacia la base de datos
+//            con = DriverManager.getConnection(servidor, user, pass); //Creamos el enlace.
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Error" + e);
+//        }
+//
+//        return con; //Creamos el enlace.
+//    }
 }

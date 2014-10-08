@@ -29,34 +29,41 @@ public class Empleados extends javax.swing.JFrame {
 
     void cargarTablaEmpleados(String valor) {
 
-        String[] titulos = {"Tarea", "Empresa", "Trabajador", "F.Alta", "Duracion"};
-        String[] registro = new String[5];
-        String sSQL;
+        String[] titulos = {"Tarea", "CIF Empresa", "Empresa", "Trabajador", "F.Alta", "Duración", "Categoría", "Jornada"};
+        String[] registro = new String[titulos.length];
+
+        String sentenciaSQL;
+        String sql_CON_filtro;
+        String sql_SIN_filtro;
         modelo = new DefaultTableModel(null, titulos);
 
         //Abajo creamos el objeto 'conexion', que nos dará los parámetros de conexión a la base MySQL.
         Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
-//        sSQL = "SELECT ID_altas, emp_nombre, tra_apelnom, alta_ini, alta_fin FROM " + this.txtTabla.getText() //Seleccionamos los campos
-        sSQL = "SELECT * FROM " + this.txtTabla.getText() //Seleccionamos los campos                
-                + " WHERE CONCAT (emp_nombre, ' ', tra_apelnom, ' ', tra_nif, ' ', tra_naf) LIKE '%" + valor + "%'" // que coincidan con la búsqueda
+        sql_SIN_filtro = "SELECT * FROM " + this.txtTabla.getText() //Seleccionamos los campos                
                 + " ORDER BY ID_altas DESC " // y los ordenamos descentientes.
                 ;
 
+        sql_CON_filtro = "SELECT * FROM " + this.txtTabla.getText() //Seleccionamos los campos                
+                + " WHERE CONCAT (emp_CIF, ' ', tra_apelnom, ' ', tra_nif, ' ') LIKE '%" + valor + "%'" // que coincidan con la búsqueda
+                + " ORDER BY ID_altas DESC " // y los ordenamos descentientes.
+                ;
+        
         try {
             Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sSQL);
+            ResultSet rs = st.executeQuery(sql_CON_filtro);
 
             //Con el método rs.next() hacemos que pase por todos los registros.
             while (rs.next()) {
                 registro[0] = rs.getString("ID_altas");
-                registro[1] = rs.getString("emp_nombre");
-                registro[2] = rs.getString("tra_apelnom");
-//                registro[3] = rs.getDate("alta_ini").toString();
-//                registro[4] = rs.getDate("alta_fin").toString();
-//                registro[5] = rs.getString("fecha_nac");
-//                registro[6] = rs.getString("genero");
+                registro[1] = rs.getString("emp_CIF");
+                registro[2] = rs.getString("emp_nombre");
+                registro[3] = rs.getString("tra_apelnom");
+                registro[4] = MetodosAuxiliares.Fechas.date_a_StringBonito(rs.getDate("alta_ini"));
+                registro[5] = MetodosAuxiliares.Fechas.date_a_StringBonito(rs.getDate("alta_fin"));
+                registro[6] = rs.getString("alta_categ");
+                registro[7] = rs.getString("alta_jornada");
                 modelo.addRow(registro);
             }
             tblConsultaEmpleado.setModel(modelo);
@@ -465,8 +472,8 @@ public class Empleados extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del trabajador"));
@@ -597,9 +604,9 @@ public class Empleados extends javax.swing.JFrame {
                     .addComponent(txtTraEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTraLocaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel20)
-                        .addComponent(txtTraLocaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel31))
                     .addComponent(jdatTraNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -848,11 +855,9 @@ public class Empleados extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        jPanel1.getAccessibleContext().setAccessibleName("Datos de la empresa");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

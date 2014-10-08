@@ -1,5 +1,6 @@
 package MetodosAuxiliares;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,6 +28,18 @@ public class Fechas {
             System.out.println(ex);
         }
         return fechaDate;
+    }
+
+    public static String date_a_StringBonito(Date fechaInicial) {
+        String convertido = "";
+
+        try {
+            DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
+            convertido = fecha.format(fechaInicial);
+        } catch (Exception e) {
+            convertido = "- abierto -";
+        }
+        return convertido;
     }
 
 }
