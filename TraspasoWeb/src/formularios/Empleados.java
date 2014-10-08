@@ -99,10 +99,10 @@ public class Empleados extends javax.swing.JFrame {
                 gen = rs.getString("genero");
             }
 
-            txtPrimerApellido.setText(ap1);
-            txtSegundoApellido.setText(ap2);
-            txtPrimerNombre.setText(nom1);
-            txtSegundoNombre.setText(nom2);
+            txtEmpresaCIF.setText(ap1);
+            txtEmpresaNombre.setText(ap2);
+            txtEmpresaContacto.setText(nom1);
+            txtEmpresaTelefono.setText(nom2);
             id_Actualizar = id;
             //jcalFNac.setDate(MetodosAuxiliares.Fechas.pasarFecha_a_Date(fn));
 
@@ -113,15 +113,15 @@ public class Empleados extends javax.swing.JFrame {
     }
 
     void inhabilitar() {
-        txtPrimerApellido.setEnabled(false);
-        txtSegundoApellido.setEnabled(false);
-        txtPrimerNombre.setEnabled(false);
-        txtSegundoNombre.setEnabled(false);
+        txtEmpresaCIF.setEnabled(false);
+        txtEmpresaNombre.setEnabled(false);
+        txtEmpresaContacto.setEnabled(false);
+        txtEmpresaTelefono.setEnabled(false);
         //cboGenero.setEnabled(false);
-        txtPrimerApellido.setText("");
-        txtSegundoApellido.setText("");
-        txtPrimerNombre.setText("");
-        txtSegundoNombre.setText("");
+        txtEmpresaCIF.setText("");
+        txtEmpresaNombre.setText("");
+        txtEmpresaContacto.setText("");
+        txtEmpresaTelefono.setText("");
         btnGuardar.setEnabled(false);
         btnCancelar.setEnabled(false);
         //jcalFNac.setEnabled(false);
@@ -129,14 +129,14 @@ public class Empleados extends javax.swing.JFrame {
     }
 
     void habilitar() {
-        txtPrimerApellido.setEnabled(true);
-        txtSegundoApellido.setEnabled(true);
-        txtPrimerNombre.setEnabled(true);
-        txtSegundoNombre.setEnabled(true);
+        txtEmpresaCIF.setEnabled(true);
+        txtEmpresaNombre.setEnabled(true);
+        txtEmpresaContacto.setEnabled(true);
+        txtEmpresaTelefono.setEnabled(true);
         //cboGenero.setEnabled(true);
         btnGuardar.setEnabled(true);
         btnCancelar.setEnabled(true);
-        txtPrimerApellido.requestFocus();
+        txtEmpresaCIF.requestFocus();
         //jcalFNac.setEnabled(true);
     }
 
@@ -155,20 +155,20 @@ public class Empleados extends javax.swing.JFrame {
         mnEditar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtPrimerApellido = new javax.swing.JTextField();
+        txtEmpresaCIF = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtSegundoApellido = new javax.swing.JTextField();
+        txtEmpresaNombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtPrimerNombre = new javax.swing.JTextField();
+        txtEmpresaContacto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtSegundoNombre = new javax.swing.JTextField();
+        txtEmpresaTelefono = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtEmpresaEmail = new javax.swing.JTextField();
         jTextField13 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -263,41 +263,41 @@ public class Empleados extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CIF/NIF");
 
-        txtPrimerApellido.addActionListener(new java.awt.event.ActionListener() {
+        txtEmpresaCIF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrimerApellidoActionPerformed(evt);
+                txtEmpresaCIFActionPerformed(evt);
             }
         });
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Nombre");
 
-        txtSegundoApellido.addActionListener(new java.awt.event.ActionListener() {
+        txtEmpresaNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSegundoApellidoActionPerformed(evt);
+                txtEmpresaNombreActionPerformed(evt);
             }
         });
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Contacto");
 
-        txtPrimerNombre.addActionListener(new java.awt.event.ActionListener() {
+        txtEmpresaContacto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrimerNombreActionPerformed(evt);
+                txtEmpresaContactoActionPerformed(evt);
             }
         });
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Teléfono");
 
-        txtSegundoNombre.addActionListener(new java.awt.event.ActionListener() {
+        txtEmpresaTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSegundoNombreActionPerformed(evt);
+                txtEmpresaTelefonoActionPerformed(evt);
             }
         });
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Genero");
+        jLabel6.setText("(vacío)");
 
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -330,6 +330,8 @@ public class Empleados extends javax.swing.JFrame {
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("Email");
 
+        jTextField13.setEnabled(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -355,12 +357,12 @@ public class Empleados extends javax.swing.JFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtSegundoNombre)
-                            .addComponent(jTextField12)
+                            .addComponent(txtEmpresaTelefono)
+                            .addComponent(txtEmpresaEmail)
                             .addComponent(jTextField13)
-                            .addComponent(txtPrimerNombre)
-                            .addComponent(txtSegundoApellido)
-                            .addComponent(txtPrimerApellido))
+                            .addComponent(txtEmpresaContacto)
+                            .addComponent(txtEmpresaNombre)
+                            .addComponent(txtEmpresaCIF))
                         .addContainerGap())))
         );
 
@@ -374,23 +376,23 @@ public class Empleados extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtPrimerApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmpresaCIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtSegundoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmpresaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtPrimerNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmpresaContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtSegundoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmpresaTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmpresaEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -862,9 +864,9 @@ public class Empleados extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtPrimerApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrimerApellidoActionPerformed
-        txtPrimerApellido.transferFocus();
-    }//GEN-LAST:event_txtPrimerApellidoActionPerformed
+    private void txtEmpresaCIFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaCIFActionPerformed
+        txtEmpresaCIF.transferFocus();
+    }//GEN-LAST:event_txtEmpresaCIFActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
@@ -878,17 +880,17 @@ public class Empleados extends javax.swing.JFrame {
         inhabilitar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void txtSegundoApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundoApellidoActionPerformed
-        txtSegundoApellido.transferFocus();
-    }//GEN-LAST:event_txtSegundoApellidoActionPerformed
+    private void txtEmpresaNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaNombreActionPerformed
+        txtEmpresaNombre.transferFocus();
+    }//GEN-LAST:event_txtEmpresaNombreActionPerformed
 
-    private void txtPrimerNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrimerNombreActionPerformed
-        txtPrimerNombre.transferFocus();
-    }//GEN-LAST:event_txtPrimerNombreActionPerformed
+    private void txtEmpresaContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaContactoActionPerformed
+        txtEmpresaContacto.transferFocus();
+    }//GEN-LAST:event_txtEmpresaContactoActionPerformed
 
-    private void txtSegundoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundoNombreActionPerformed
-        txtSegundoNombre.transferFocus();
-    }//GEN-LAST:event_txtSegundoNombreActionPerformed
+    private void txtEmpresaTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaTelefonoActionPerformed
+        txtEmpresaTelefono.transferFocus();
+    }//GEN-LAST:event_txtEmpresaTelefonoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
@@ -899,10 +901,10 @@ public class Empleados extends javax.swing.JFrame {
         String sSQL = "";
         String mensaje = "";
 
-        ap1 = txtPrimerApellido.getText();
-        ap2 = txtSegundoApellido.getText();
-        nom1 = txtPrimerNombre.getText();
-        nom2 = txtSegundoNombre.getText();
+        ap1 = txtEmpresaCIF.getText();
+        ap2 = txtEmpresaNombre.getText();
+        nom1 = txtEmpresaContacto.getText();
+        nom2 = txtEmpresaTelefono.getText();
         //f_nac = MetodosAuxiliares.Fechas.pasarJCalendaraString(jcalFNac.getCalendar());
         //gen = cboGenero.getSelectedItem().toString();
 
@@ -1085,7 +1087,6 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
     private com.toedter.calendar.JDateChooser jdatTraNac;
     private com.toedter.calendar.JDateChooser jdateContratoAlta;
@@ -1101,10 +1102,11 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JTextField txtContratoJornada;
     private javax.swing.JTextArea txtContratoNotas;
     private javax.swing.JTextField txtContratoProfesion;
-    private javax.swing.JTextField txtPrimerApellido;
-    private javax.swing.JTextField txtPrimerNombre;
-    private javax.swing.JTextField txtSegundoApellido;
-    private javax.swing.JTextField txtSegundoNombre;
+    private javax.swing.JTextField txtEmpresaCIF;
+    private javax.swing.JTextField txtEmpresaContacto;
+    private javax.swing.JTextField txtEmpresaEmail;
+    private javax.swing.JTextField txtEmpresaNombre;
+    private javax.swing.JTextField txtEmpresaTelefono;
     private javax.swing.JTextField txtTabla;
     private javax.swing.JTextField txtTraCP;
     private javax.swing.JTextField txtTraDireccion;
