@@ -376,23 +376,31 @@ public class Edicion extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del contrato"));
 
+        jLabel23.setBackground(new java.awt.Color(153, 153, 153));
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel23.setText("Inicio");
 
+        jLabel24.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Fin");
 
+        jLabel25.setBackground(new java.awt.Color(153, 153, 153));
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel25.setText("Profesión");
 
+        jLabel26.setBackground(new java.awt.Color(153, 153, 153));
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setText("Categoría");
 
+        jLabel27.setBackground(new java.awt.Color(153, 153, 153));
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel27.setText("Centro");
 
+        jLabel28.setBackground(new java.awt.Color(153, 153, 153));
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel28.setText("Jornada");
 
+        jLabel29.setBackground(new java.awt.Color(153, 153, 153));
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel29.setText("Horario");
 
@@ -404,6 +412,7 @@ public class Edicion extends javax.swing.JPanel {
         txtContratoNotas.setRows(5);
         jScrollPane4.setViewportView(txtContratoNotas);
 
+        jLabel30.setBackground(new java.awt.Color(153, 153, 153));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel30.setText("Notas");
 
@@ -423,18 +432,21 @@ public class Edicion extends javax.swing.JPanel {
                     .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
                     .addComponent(txtContratoCentro)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jdateContratoAlta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel24)
-                        .addGap(18, 18, 18)
-                        .addComponent(jdateContratoBaja, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
-                    .addComponent(txtContratoProfesion)
                     .addComponent(txtContratoCategoria)
                     .addComponent(jScrollPane4)
-                    .addComponent(txtContratoJornada))
+                    .addComponent(txtContratoJornada)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtContratoProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jdateContratoAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jdateContratoBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -520,74 +532,71 @@ public class Edicion extends javax.swing.JPanel {
     }//GEN-LAST:event_txtEmpresaTelefonoActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        habilitar();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
-        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
-        Connection objetoConexion = mysql.Conectar();
-
-        String ap1, ap2, nom1, nom2, f_nac, gen;
-        String sSQL = "";
-        String mensaje = "";
-
-        ap1 = txtEmpresaCIF.getText();
-        ap2 = txtEmpresaNombre.getText();
-        nom1 = txtEmpresaContacto.getText();
-        nom2 = txtEmpresaTelefono.getText();
-        //f_nac = MetodosAuxiliares.Fechas.pasarJCalendaraString(jcalFNac.getCalendar());
-        //gen = cboGenero.getSelectedItem().toString();
-
-        GregorianCalendar fechaAlta = new GregorianCalendar();
-        //fechaAlta.setTime(jcalFNac.getDate());
-
-        if (accion.equals("Insertar")) {
-            sSQL = "INSERT INTO datos_personales(apellido1, apellido2, nombre1, nombre2, fecha_nac, genero)"
-            + "VALUES(?, ?, ?, ?, ?, ?)";
-            mensaje = "Los datos se han insertado de manera satisfactoria.";
-        } else if (accion.equals("Modificar")) {
-            sSQL = "UPDATE datos_personales "
-            + "SET apellido1 = ?, "
-            + "apellido2 = ?, "
-            + "nombre1 = ?, "
-            + "nombre2 = ?, "
-            + "fecha_nac = ?, "
-            + "genero = ? "
-            + "WHERE id_emp = " + id_Actualizar;
-            mensaje = "Los datos se han modificado correctamente.";
-        }
-
-        try {
-
-            PreparedStatement pst = objetoConexion.prepareStatement(sSQL);
-            pst.setString(1, ap1);
-            pst.setString(2, ap2);
-            pst.setString(3, nom1);
-            pst.setString(4, nom2);
-            //pst.setString(5, f_nac);
-            //pst.setString(6, gen);
-
-            int n = pst.executeUpdate();    //Se crea esta variable para comprobar que ha funcinado el método.
-            if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
-
-                JOptionPane.showMessageDialog(null, mensaje);
-                cargarTablaEmpleados("");
-                inhabilitar();
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-
+//
+//        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
+//        Connection objetoConexion = mysql.Conectar();
+//
+//        String ap1, ap2, nom1, nom2, f_nac, gen;
+//        String sSQL = "";
+//        String mensaje = "";
+//
+//        ap1 = txtEmpresaCIF.getText();
+//        ap2 = txtEmpresaNombre.getText();
+//        nom1 = txtEmpresaContacto.getText();
+//        nom2 = txtEmpresaTelefono.getText();
+//        //f_nac = MetodosAuxiliares.Fechas.pasarJCalendaraString(jcalFNac.getCalendar());
+//        //gen = cboGenero.getSelectedItem().toString();
+//
+//        GregorianCalendar fechaAlta = new GregorianCalendar();
+//        //fechaAlta.setTime(jcalFNac.getDate());
+//
+//        if (accion.equals("Insertar")) {
+//            sSQL = "INSERT INTO datos_personales(apellido1, apellido2, nombre1, nombre2, fecha_nac, genero)"
+//            + "VALUES(?, ?, ?, ?, ?, ?)";
+//            mensaje = "Los datos se han insertado de manera satisfactoria.";
+//        } else if (accion.equals("Modificar")) {
+//            sSQL = "UPDATE datos_personales "
+//            + "SET apellido1 = ?, "
+//            + "apellido2 = ?, "
+//            + "nombre1 = ?, "
+//            + "nombre2 = ?, "
+//            + "fecha_nac = ?, "
+//            + "genero = ? "
+//            + "WHERE id_emp = " + id_Actualizar;
+//            mensaje = "Los datos se han modificado correctamente.";
+//        }
+//
+//        try {
+//
+//            PreparedStatement pst = objetoConexion.prepareStatement(sSQL);
+//            pst.setString(1, ap1);
+//            pst.setString(2, ap2);
+//            pst.setString(3, nom1);
+//            pst.setString(4, nom2);
+//            //pst.setString(5, f_nac);
+//            //pst.setString(6, gen);
+//
+//            int n = pst.executeUpdate();    //Se crea esta variable para comprobar que ha funcinado el método.
+//            if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
+//
+//                JOptionPane.showMessageDialog(null, mensaje);
+//                cargarTablaEmpleados("");
+//                inhabilitar();
+//            }
+//
+//        } catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(null, ex);
+//        }
+//
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        inhabilitar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
 

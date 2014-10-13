@@ -35,7 +35,9 @@ public class Empleados extends javax.swing.JFrame {
         modelo = new DefaultTableModel(null, misTitulos);
 
         //Creamos el objeto 'conexion', que nos dará los parámetros de conexión a la base MySQL.
-        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
+        //Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
+        
+        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.cmbBaseDatos.getSelectedItem().toString(), this.txtTabla.getText(), this.cmbUsuario.getSelectedItem().toString(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
         String sentenciaSQL = "SELECT * FROM " + this.txtTabla.getText() //Seleccionamos todos los campos                
@@ -46,7 +48,7 @@ public class Empleados extends javax.swing.JFrame {
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sentenciaSQL); //Creamos el objeto rs, del tipo ResultSet,
-                                                          //que contiene el resultado de la sentencia SQL.
+            //que contiene el resultado de la sentencia SQL.
 
             //Con el método rs.next() hacemos que pase por todos los registros.
             while (rs.next()) {
@@ -75,7 +77,7 @@ public class Empleados extends javax.swing.JFrame {
         String sSQL;
         String ap1 = "", ap2 = "", nom1 = "", nom2 = "", fn = "", gen = "";
 
-        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
+        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.cmbBaseDatos.getSelectedItem().toString(), this.txtTabla.getText(), this.cmbUsuario.getSelectedItem().toString(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
         sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales "
@@ -94,12 +96,7 @@ public class Empleados extends javax.swing.JFrame {
                 gen = rs.getString("genero");
             }
 
-            Edicion.txtEmpresaCIF.setText(ap1);
-            txtEmpresaNombre.setText(ap2);
-            txtEmpresaContacto.setText(nom1);
-            txtEmpresaTelefono.setText(nom2);
             id_Actualizar = id;
-            //jcalFNac.setDate(MetodosAuxiliares.Fechas.pasarFecha_a_Date(fn));
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -108,31 +105,10 @@ public class Empleados extends javax.swing.JFrame {
     }
 
     void inhabilitar() {
-        txtEmpresaCIF.setEnabled(false);
-        txtEmpresaNombre.setEnabled(false);
-        txtEmpresaContacto.setEnabled(false);
-        txtEmpresaTelefono.setEnabled(false);
-        //cboGenero.setEnabled(false);
-        txtEmpresaCIF.setText("");
-        txtEmpresaNombre.setText("");
-        txtEmpresaContacto.setText("");
-        txtEmpresaTelefono.setText("");
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-        //jcalFNac.setEnabled(false);
 
     }
 
     void habilitar() {
-        txtEmpresaCIF.setEnabled(true);
-        txtEmpresaNombre.setEnabled(true);
-        txtEmpresaContacto.setEnabled(true);
-        txtEmpresaTelefono.setEnabled(true);
-        //cboGenero.setEnabled(true);
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        txtEmpresaCIF.requestFocus();
-        //jcalFNac.setEnabled(true);
     }
 
     /**
@@ -150,8 +126,6 @@ public class Empleados extends javax.swing.JFrame {
         mnEditar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -164,14 +138,14 @@ public class Empleados extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         cmbServidor = new javax.swing.JComboBox();
         jLabel9 = new javax.swing.JLabel();
-        txtBaseDatos = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtTabla = new javax.swing.JTextField();
-        txtUsuario = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         passPassword = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
+        cmbBaseDatos = new javax.swing.JComboBox();
+        cmbUsuario = new javax.swing.JComboBox();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -199,24 +173,10 @@ public class Empleados extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Controles"));
 
-        btnNuevo.setText("Nuevo");
+        btnNuevo.setText("Entrada Manual");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -233,26 +193,18 @@ public class Empleados extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnNuevo)
+                .addGap(18, 18, 18)
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancelar, btnGuardar, btnNuevo, btnSalir});
-
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnSalir)
-                    .addComponent(btnNuevo)
-                    .addComponent(btnCancelar))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -328,7 +280,7 @@ public class Empleados extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -338,12 +290,10 @@ public class Empleados extends javax.swing.JFrame {
         jLabel8.setText("Servidor");
 
         cmbServidor.setEditable(true);
-        cmbServidor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "192.168.100.1", "localhost", "192.168.1.10", "84.127.225.17", "84.127.225.30" }));
+        cmbServidor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "www.agelso.es", "192.168.100.1", "localhost", "192.168.1.10", "84.127.225.17", "84.127.225.30" }));
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Base de datos");
-
-        txtBaseDatos.setText("pruebas");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Tabla");
@@ -355,13 +305,6 @@ public class Empleados extends javax.swing.JFrame {
         txtTabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTablaActionPerformed(evt);
-            }
-        });
-
-        txtUsuario.setText("javauser");
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
             }
         });
 
@@ -377,6 +320,12 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
 
+        cmbBaseDatos.setEditable(true);
+        cmbBaseDatos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ndgyhtps_pruebas", "pruebas", " " }));
+
+        cmbUsuario.setEditable(true);
+        cmbUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ndgyhtps_javausr", "root", "javauser" }));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -384,55 +333,61 @@ public class Empleados extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTabla)
+                    .addComponent(cmbServidor, 0, 130, Short.MAX_VALUE)
+                    .addComponent(passPassword))
+                .addGap(50, 50, 50)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtBaseDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbBaseDatos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
+
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel5, jLabel7, jLabel8});
+
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtBaseDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(cmbServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel10)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel9)
+                        .addComponent(cmbBaseDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel10)
+                    .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
                     .addComponent(passPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel10, jLabel9});
+
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel5, jLabel7, jLabel8});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -455,8 +410,8 @@ public class Empleados extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
         );
 
@@ -470,70 +425,6 @@ public class Empleados extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         habilitar();
     }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        inhabilitar();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
-        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
-        Connection objetoConexion = mysql.Conectar();
-
-        String ap1, ap2, nom1, nom2, f_nac, gen;
-        String sSQL = "";
-        String mensaje = "";
-
-        ap1 = txtEmpresaCIF.getText();
-        ap2 = txtEmpresaNombre.getText();
-        nom1 = txtEmpresaContacto.getText();
-        nom2 = txtEmpresaTelefono.getText();
-        //f_nac = MetodosAuxiliares.Fechas.pasarJCalendaraString(jcalFNac.getCalendar());
-        //gen = cboGenero.getSelectedItem().toString();
-
-        GregorianCalendar fechaAlta = new GregorianCalendar();
-        //fechaAlta.setTime(jcalFNac.getDate());
-
-        if (accion.equals("Insertar")) {
-            sSQL = "INSERT INTO datos_personales(apellido1, apellido2, nombre1, nombre2, fecha_nac, genero)"
-                    + "VALUES(?, ?, ?, ?, ?, ?)";
-            mensaje = "Los datos se han insertado de manera satisfactoria.";
-        } else if (accion.equals("Modificar")) {
-            sSQL = "UPDATE datos_personales "
-                    + "SET apellido1 = ?, "
-                    + "apellido2 = ?, "
-                    + "nombre1 = ?, "
-                    + "nombre2 = ?, "
-                    + "fecha_nac = ?, "
-                    + "genero = ? "
-                    + "WHERE id_emp = " + id_Actualizar;
-            mensaje = "Los datos se han modificado correctamente.";
-        }
-
-        try {
-
-            PreparedStatement pst = objetoConexion.prepareStatement(sSQL);
-            pst.setString(1, ap1);
-            pst.setString(2, ap2);
-            pst.setString(3, nom1);
-            pst.setString(4, nom2);
-            //pst.setString(5, f_nac);
-            //pst.setString(6, gen);
-
-            int n = pst.executeUpdate();    //Se crea esta variable para comprobar que ha funcinado el método.
-            if (n > 0) {                    //Si n>0 entonces se han introducido bien los datos.
-
-                JOptionPane.showMessageDialog(null, mensaje);
-                cargarTablaEmpleados("");
-                inhabilitar();
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-
-
-    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cargarTablaEmpleados("");
@@ -580,10 +471,6 @@ public class Empleados extends javax.swing.JFrame {
         cargarTablaEmpleados("");        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsuarioActionPerformed
-
     private void txtTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTablaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTablaActionPerformed
@@ -625,12 +512,12 @@ public class Empleados extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JComboBox cmbBaseDatos;
     private javax.swing.JComboBox cmbServidor;
+    private javax.swing.JComboBox cmbUsuario;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
@@ -648,9 +535,7 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnEditar;
     private javax.swing.JPasswordField passPassword;
     private javax.swing.JTable tblConsultaEmpleado;
-    private javax.swing.JTextField txtBaseDatos;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtTabla;
-    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
