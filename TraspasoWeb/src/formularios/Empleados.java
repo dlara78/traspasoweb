@@ -5,9 +5,8 @@
  */
 package formularios;
 
-import BaseDatos.Conector;
+import BaseDatos.Conexion;
 import java.sql.*;
-import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,8 +34,8 @@ public class Empleados extends javax.swing.JFrame {
         modelo = new DefaultTableModel(null, misTitulos);
 
         //Creamos el objeto 'conexion', que nos dará los parámetros de conexión a la base MySQL.
-        //Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
-        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.cmbBaseDatos.getSelectedItem().toString(), this.txtTabla.getText(), this.cmbUsuario.getSelectedItem().toString(), String.valueOf(this.passPassword.getPassword()));
+        //Conector mysql = new Conexion(this.cmbServidor.getSelectedItem().toString(), this.txtBaseDatos.getText(), this.txtTabla.getText(), this.txtUsuario.getText(), String.valueOf(this.passPassword.getPassword()));
+        Conexion mysql = new Conexion(this.cmbServidor.getSelectedItem().toString(), this.cmbBaseDatos.getSelectedItem().toString(), this.txtTabla.getText(), this.cmbUsuario.getSelectedItem().toString(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
         String sentenciaSQL = "SELECT * FROM " + this.txtTabla.getText() //Seleccionamos todos los campos                
@@ -76,7 +75,7 @@ public class Empleados extends javax.swing.JFrame {
         String sSQL;
         String ap1 = "", ap2 = "", nom1 = "", nom2 = "", fn = "", gen = "";
 
-        Conector mysql = new Conector(this.cmbServidor.getSelectedItem().toString(), this.cmbBaseDatos.getSelectedItem().toString(), this.txtTabla.getText(), this.cmbUsuario.getSelectedItem().toString(), String.valueOf(this.passPassword.getPassword()));
+        Conexion mysql = new Conexion(this.cmbServidor.getSelectedItem().toString(), this.cmbBaseDatos.getSelectedItem().toString(), this.txtTabla.getText(), this.cmbUsuario.getSelectedItem().toString(), String.valueOf(this.passPassword.getPassword()));
         Connection cn = mysql.Conectar();
 
         sSQL = "SELECT id_emp, apellido1, apellido2, nombre1, nombre2, fecha_nac, genero FROM datos_personales "

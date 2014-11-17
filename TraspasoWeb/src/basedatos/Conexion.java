@@ -3,7 +3,7 @@ package BaseDatos;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
-public class Conector {
+public class Conexion {
 
     private String servidor;
     private String db;
@@ -14,10 +14,10 @@ public class Conector {
     private static Connection con;
 
     /*
-     Esta clase se usa para crear objetos de tipo Conector, que albergarán los parámetros de la conexión.
+     Esta clase se usa para crear objetos de tipo Conexion, que albergarán los parámetros de la conexión.
      Y además disponen de los métodos Conectar() (de tipo Connection) para realizar la conexión a la base de datos MySQL.    
      */
-    public Conector(String servidor, String baseDatos, String tabla, String usuario, String password) {
+    public Conexion(String servidor, String baseDatos, String tabla, String usuario, String password) {
 
         this.servidor = servidor;
         this.db = baseDatos;
