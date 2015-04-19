@@ -45,8 +45,9 @@ public class Empleados extends javax.swing.JFrame {
 
         try {
             Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sentenciaSQL); //Creamos el objeto rs, del tipo ResultSet,
-            //que contiene el resultado de la sentencia SQL.
+
+            //Creamos el objeto rs, del tipo ResultSet, que contiene el resultado de la sentencia SQL.
+            ResultSet rs = st.executeQuery(sentenciaSQL);
 
             //Con el método rs.next() hacemos que pase por todos los registros.
             while (rs.next()) {
@@ -427,6 +428,8 @@ public class Empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        Edicion nuevo = new Edicion();
+        nuevo.setVisible(true);
         habilitar();
     }//GEN-LAST:event_btnNuevoActionPerformed
 

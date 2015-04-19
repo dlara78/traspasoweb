@@ -44,20 +44,5 @@ public class Conexion {
         return con; //Creamos el enlace.
     }
 
-//    public Connection Conectar(String servidor, String user, String pass) {
-//        /*
-//         Este método carga los drivers sql, recoge los parámetros de conexión
-//         y devuelve un objeto de tipo Connection para realizar la conexión con la
-//         base de datos.
-//         */
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver"); //Cargamos el Driver MySQL
-//            //Creamos el enlace hacia la base de datos
-//            con = DriverManager.getConnection(servidor, user, pass); //Creamos el enlace.
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Error" + e);
-//        }
-//
-//        return con; //Creamos el enlace.
-//    }
+
 }
